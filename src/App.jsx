@@ -1,62 +1,4 @@
-const { createStore } = Redux;
-const { Provider, useDispatch, useSelector } = ReactRedux;
-
-const initialState = {
-  mobileMenuOpen: false,
-  form: {
-    name: '',
-    email: '',
-    message: '',
-  },
-  errors: {
-    name: '',
-    email: '',
-    message: '',
-  },
-  status: '',
-  statusType: 'idle',
-};
-
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case 'TOGGLE_MENU':
-      return { ...state, mobileMenuOpen: !state.mobileMenuOpen };
-    case 'CLOSE_MENU':
-      return { ...state, mobileMenuOpen: false };
-    case 'SET_FIELD':
-      return {
-        ...state,
-        form: { ...state.form, [action.payload.field]: action.payload.value },
-      };
-    case 'SET_MESSAGE_FROM_TICKET':
-      return {
-        ...state,
-        form: {
-          ...state.form,
-          message: `Хочу замовити квиток на концерт у місті ${action.payload.city}.`,
-        },
-      };
-    case 'SET_VALIDATION':
-      return {
-        ...state,
-        errors: action.payload.errors,
-        status: action.payload.status,
-        statusType: action.payload.statusType,
-      };
-    case 'SUBMIT_SUCCESS':
-      return {
-        ...state,
-        form: { name: '', email: '', message: '' },
-        errors: { name: '', email: '', message: '' },
-        status: 'Дякуємо! Повідомлення успішно відправлено.',
-        statusType: 'success',
-      };
-    default:
-      return state;
-  }
-}
-
-const store = createStore(reducer);
+import { useDispatch, useSelector } from 'react-redux';
 
 const concerts = [
   { city: 'Київ', place: 'Dockers Pub', seats: 250, date: '25.10.2025, 19:00' },
@@ -82,152 +24,6 @@ const members = [
       'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=800&q=80',
   },
 ];
-
-function App() {
-  const dispatch = useDispatch();
-  const mobileMenuOpen = useSelector((state) => state.mobileMenuOpen);
-
-  const scrollToContact = () => {
-    const contactEl = document.getElementById('contact');
-    if (contactEl) {
-      contactEl.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleTicketOrder = (city) => {
-    dispatch({ type: 'SET_MESSAGE_FROM_TICKET', payload: { city } });
-    scrollToContact();
-  };
-
-  const closeMenu = () => dispatch({ type: 'CLOSE_MENU' });
-
-  return (
-    <>
-      <header className="hero" id="top">
-        <div className="overlay"></div>
-        <nav className="container nav">
-          <a href="#top" className="brand" onClick={closeMenu}>G&G</a>
-          <button
-            className="menu-toggle"
-            aria-label="Відкрити меню"
-            onClick={() => dispatch({ type: 'TOGGLE_MENU' })}
-          >
-            ☰
-          </button>
-          <ul className={`menu ${mobileMenuOpen ? 'open' : ''}`}>
-            {[
-              { href: '#about', label: 'Про гурт' },
-              { href: '#concerts', label: 'Концерти' },
-              { href: '#gallery', label: 'Галерея' },
-              { href: '#contact', label: 'Контакти' },
-            ].map((item) => (
-              <li key={item.href}>
-                <a href={item.href} onClick={closeMenu}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="container hero-content">
-          <h1>Гурт «Грім та Грім»</h1>
-          <p className="subtitle">Справжній український рок, який гуркотить в серці.</p>
-          <p>
-            «Грім та Грім» — це поєднання потужних гітарних рифів, чесних текстів і вибухової
-            енергії сцени. Ми граємо для тих, хто цінує живий звук, свободу та силу музики.
-          </p>
-          <p>
-            <span className="accent">Наші концерти</span> — це завжди контакт з залом, драйв і емоції.
-            Приєднуйся до нас на найближчих виступах і відчуй цю силу наживо!
-          </p>
-          <button className="btn btn-primary" onClick={scrollToContact}>ЗАКАЗАТИ КВИТОК</button>
-        </div>
-      </header>
-
-      <main>
-        <section className="container concerts" id="concerts">
-          <h2>Найближчі концерти</h2>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Місто / Заклад</th>
-                  <th>К-сть місць</th>
-                  <th>Дата і час</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {concerts.map((concert) => (
-                  <tr key={concert.city}>
-                    <td><strong>{concert.city}</strong> — {concert.place}</td>
-                    <td>{concert.seats}</td>
-                    <td>{concert.date}</td>
-                    <td>
-                      <button className="btn btn-ticket" onClick={() => handleTicketOrder(concert.city)}>
-                        Замовити квиток
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="container" id="gallery">
-          <h2 className="center">Учасники гурту</h2>
-          <div className="members">
-            {members.map((member) => (
-              <article className="card" key={member.name}>
-                <img src={member.image} alt={member.name} />
-                <p>{member.name}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="story" id="about">
-          <div className="container story-grid">
-            <div>
-              <h2>Наша історія</h2>
-              <p>
-                «Грім та Грім» народився з бажання створювати музику, яка відчувається серцем. Ми
-                почали свій шлях у маленькій студії в центрі Києва, де кожен акорд, кожне слово було
-                наповнене емоціями та переживаннями.
-              </p>
-              <p>
-                За роки нашої діяльності ми виступили на десятках сцен, від невеликих клубів до
-                великих фестивалів. Наше звучання — це поєднання традиційного року з сучасними
-                елементами.
-              </p>
-              <p>
-                Кожен наш виступ — це не просто концерт, а справжнє шоу, де ми ділимось своєю енергією
-                з глядачами та створюємо неповторну атмосферу.
-              </p>
-            </div>
-            <img
-              className="story-image"
-              src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80"
-              alt="Концертний виступ гурту"
-            />
-          </div>
-        </section>
-
-        <ContactSection />
-      </main>
-
-      <footer>
-        <div className="container footer">
-          <div>
-            <p>© 2025 «Грім та Грім». Всі права захищені.</p>
-            <p>booking@lotoplay • +38 (099) 123-45-67</p>
-          </div>
-          <p>Instagram · YouTube · Facebook</p>
-        </div>
-      </footer>
-    </>
-  );
-}
 
 function ContactSection() {
   const dispatch = useDispatch();
@@ -317,7 +113,9 @@ function ContactSection() {
           ></textarea>
           <small className="error">{errors.message}</small>
 
-          <button className="btn btn-pink" type="submit">Відправити</button>
+          <button className="btn btn-pink" type="submit">
+            Відправити
+          </button>
           <p className={`form-status ${statusType}`}>{status}</p>
         </form>
 
@@ -334,8 +132,156 @@ function ContactSection() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+export default function App() {
+  const dispatch = useDispatch();
+  const mobileMenuOpen = useSelector((state) => state.mobileMenuOpen);
+
+  const scrollToContact = () => {
+    const contactEl = document.getElementById('contact');
+    if (contactEl) {
+      contactEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleTicketOrder = (city) => {
+    dispatch({ type: 'SET_MESSAGE_FROM_TICKET', payload: { city } });
+    scrollToContact();
+  };
+
+  const closeMenu = () => dispatch({ type: 'CLOSE_MENU' });
+
+  return (
+    <>
+      <header className="hero" id="top">
+        <div className="overlay"></div>
+        <nav className="container nav">
+          <a href="#top" className="brand" onClick={closeMenu}>
+            G&G
+          </a>
+          <button
+            className="menu-toggle"
+            aria-label="Відкрити меню"
+            onClick={() => dispatch({ type: 'TOGGLE_MENU' })}
+          >
+            ☰
+          </button>
+          <ul className={`menu ${mobileMenuOpen ? 'open' : ''}`}>
+            {[
+              { href: '#about', label: 'Про гурт' },
+              { href: '#concerts', label: 'Концерти' },
+              { href: '#gallery', label: 'Галерея' },
+              { href: '#contact', label: 'Контакти' },
+            ].map((item) => (
+              <li key={item.href}>
+                <a href={item.href} onClick={closeMenu}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="container hero-content">
+          <h1>Гурт «Грім та Грім»</h1>
+          <p className="subtitle">Справжній український рок, який гуркотить в серці.</p>
+          <p>
+            «Грім та Грім» — це поєднання потужних гітарних рифів, чесних текстів і вибухової
+            енергії сцени. Ми граємо для тих, хто цінує живий звук, свободу та силу музики.
+          </p>
+          <p>
+            <span className="accent">Наші концерти</span> — це завжди контакт з залом, драйв і емоції.
+            Приєднуйся до нас на найближчих виступах і відчуй цю силу наживо!
+          </p>
+          <button className="btn btn-primary" onClick={scrollToContact}>
+            ЗАКАЗАТИ КВИТОК
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section className="container concerts" id="concerts">
+          <h2>Найближчі концерти</h2>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Місто / Заклад</th>
+                  <th>К-сть місць</th>
+                  <th>Дата і час</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {concerts.map((concert) => (
+                  <tr key={concert.city}>
+                    <td>
+                      <strong>{concert.city}</strong> — {concert.place}
+                    </td>
+                    <td>{concert.seats}</td>
+                    <td>{concert.date}</td>
+                    <td>
+                      <button className="btn btn-ticket" onClick={() => handleTicketOrder(concert.city)}>
+                        Замовити квиток
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="container" id="gallery">
+          <h2 className="center">Учасники гурту</h2>
+          <div className="members">
+            {members.map((member) => (
+              <article className="card" key={member.name}>
+                <img src={member.image} alt={member.name} />
+                <p>{member.name}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="story" id="about">
+          <div className="container story-grid">
+            <div>
+              <h2>Наша історія</h2>
+              <p>
+                «Грім та Грім» народився з бажання створювати музику, яка відчувається серцем. Ми
+                почали свій шлях у маленькій студії в центрі Києва, де кожен акорд, кожне слово було
+                наповнене емоціями та переживаннями.
+              </p>
+              <p>
+                За роки нашої діяльності ми виступили на десятках сцен, від невеликих клубів до
+                великих фестивалів. Наше звучання — це поєднання традиційного року з сучасними
+                елементами.
+              </p>
+              <p>
+                Кожен наш виступ — це не просто концерт, а справжнє шоу, де ми ділимось своєю енергією
+                з глядачами та створюємо неповторну атмосферу.
+              </p>
+            </div>
+            <img
+              className="story-image"
+              src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80"
+              alt="Концертний виступ гурту"
+            />
+          </div>
+        </section>
+
+        <ContactSection />
+      </main>
+
+      <footer>
+        <div className="container footer">
+          <div>
+            <p>© 2025 «Грім та Грім». Всі права захищені.</p>
+            <p>booking@lotoplay • +38 (099) 123-45-67</p>
+          </div>
+          <p>Instagram · YouTube · Facebook</p>
+        </div>
+      </footer>
+    </>
+  );
+}

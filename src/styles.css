@@ -78,6 +78,13 @@ h1 { font-size: clamp(2rem, 4vw, 3.75rem); margin: 0 0 0.5rem; }
 p { line-height: 1.65; }
 .accent { color: #39d3ff; font-weight: 700; }
 
+.concerts-link {
+  text-decoration: none;
+}
+.concerts-link:hover {
+  text-decoration: underline;
+}
+
 .btn {
   border: 0;
   border-radius: 10px;

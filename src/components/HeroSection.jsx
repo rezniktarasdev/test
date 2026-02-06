@@ -35,7 +35,7 @@ export default function HeroSection({ mobileMenuOpen, onToggleMenu, onCloseMenu,
           енергії сцени. Ми граємо для тих, хто цінує живий звук, свободу та силу музики.
         </p>
         <p>
-          <span className="accent">Наші концерти</span> — це завжди контакт з залом, драйв і емоції.
+          <a className="accent concerts-link" href="/concerts-info.html">Наші концерти</a> — це завжди контакт з залом, драйв і емоції.
           Приєднуйся до нас на найближчих виступах і відчуй цю силу наживо!
         </p>
         <button className="btn btn-primary" onClick={onScrollToContact}>

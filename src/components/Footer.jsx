@@ -6,9 +6,19 @@ export default function Footer() {
       <div className="container footer">
         <div>
           <p>© 2025 «Грім та Грім». Всі права захищені.</p>
-          <p>booking@lotoplay • +38 (099) 123-45-67</p>
+          <p>
+            <a className="footer-link" href="mailto:booking@lotoplay">booking@lotoplay</a>
+            {' • '}
+            <a className="footer-link" href="tel:+380991234567">+38 (099) 123-45-67</a>
+          </p>
         </div>
-        <p>Instagram · YouTube · Facebook</p>
+        <p className="footer-socials">
+          <a className="footer-link" href="/instagram.html">Instagram</a>
+          {' · '}
+          <a className="footer-link" href="/youtube.html">YouTube</a>
+          {' · '}
+          <a className="footer-link" href="/facebook.html">Facebook</a>
+        </p>
       </div>
     </footer>
   );

@@ -231,6 +231,21 @@ footer {
   font-size: 0.95rem;
 }
 
+.footer-socials {
+  margin: 0;
+}
+
+.footer-link {
+  color: #d7e1f0;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 @media (max-width: 900px) {
   .members,
   .story-grid,

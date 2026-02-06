@@ -14,6 +14,7 @@ const initialState = {
   },
   status: '',
   statusType: 'idle',
+  selectedCity: 'Київ',
 };
 
 function reducer(state = initialState, action) {
@@ -30,6 +31,7 @@ function reducer(state = initialState, action) {
     case 'SET_MESSAGE_FROM_TICKET':
       return {
         ...state,
+        selectedCity: action.payload.city,
         form: {
           ...state.form,
           message: `Хочу замовити квиток на концерт у місті ${action.payload.city}.`,

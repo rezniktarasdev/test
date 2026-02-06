@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function ContactSection() {
   const dispatch = useDispatch();
-  const { form, errors, status, statusType } = useSelector((state) => state);
+  const { form, errors, status, statusType, selectedCity } = useSelector((state) => state);
+  const cityQuery = encodeURIComponent(selectedCity);
 
   const onFieldChange = (field, value) => {
     dispatch({ type: 'SET_FIELD', payload: { field, value } });
@@ -98,8 +99,8 @@ export default function ContactSection() {
         <div className="map-wrap">
           <h3>Наше місцезнаходження</h3>
           <iframe
-            title="Мапа Києва"
-            src="https://www.google.com/maps?q=Kyiv&output=embed"
+            title={`Мапа міста ${selectedCity}`}
+            src={`https://www.google.com/maps?q=${cityQuery}&output=embed`}
             loading="lazy"
           ></iframe>
         </div>

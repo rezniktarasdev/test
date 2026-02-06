@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function HeroSection({ mobileMenuOpen, onToggleMenu, onCloseMenu, onScrollToContact }) {
+export default function HeroSection({
+  mobileMenuOpen,
+  onToggleMenu,
+  onCloseMenu,
+  onScrollToContact,
+  concerts,
+  onTicketOrder,
+}) {
+  const [ticketPanelOpen, setTicketPanelOpen] = useState(false);
+
+  const handlePrimaryClick = () => {
+    setTicketPanelOpen((prev) => !prev);
+  };
+
+  const handleOrder = (city) => {
+    onTicketOrder(city);
+    setTicketPanelOpen(false);
+  };
+
   return (
     <header className="hero" id="top">
       <div className="overlay"></div>
@@ -38,9 +56,37 @@ export default function HeroSection({ mobileMenuOpen, onToggleMenu, onCloseMenu,
           <a className="accent concerts-link" href="/concerts-info.html">Наші концерти</a> — це завжди контакт з залом, драйв і емоції.
           Приєднуйся до нас на найближчих виступах і відчуй цю силу наживо!
         </p>
-        <button className="btn btn-primary" onClick={onScrollToContact}>
-          ЗАКАЗАТИ КВИТОК
-        </button>
+        <div className="hero-ticket-cta">
+          <button
+            className="btn btn-primary"
+            type="button"
+            aria-expanded={ticketPanelOpen}
+            aria-controls="hero-ticket-panel"
+            onClick={handlePrimaryClick}
+          >
+            ЗАМОВИТИ КВИТОК
+          </button>
+          {ticketPanelOpen && (
+            <div className="ticket-panel" id="hero-ticket-panel">
+              <p className="ticket-panel-title">Оберіть місто концерту:</p>
+              <div className="ticket-panel-list">
+                {concerts.map((concert) => (
+                  <button
+                    key={concert.city}
+                    className="btn btn-ticket"
+                    type="button"
+                    onClick={() => handleOrder(concert.city)}
+                  >
+                    {concert.city}
+                  </button>
+                ))}
+              </div>
+              <button className="ticket-panel-link" type="button" onClick={onScrollToContact}>
+                Або перейти до форми контакту
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

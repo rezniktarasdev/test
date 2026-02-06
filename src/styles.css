@@ -298,23 +298,57 @@ footer {
     max-width: 100%;
   }
 
+  .concerts .table-wrap {
+    overflow: hidden;
+  }
+
   table {
-    min-width: 560px;
+    min-width: 100%;
+  }
+
+  .concerts thead {
+    display: none;
+  }
+
+  .concerts tbody,
+  .concerts tr,
+  .concerts td {
+    display: block;
+    width: 100%;
+  }
+
+  .concerts tr {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .concerts td {
+    border-bottom: 0;
+    padding: 0.35rem 0;
+    font-size: 0.92rem;
+  }
+
+  .concerts td:nth-child(1)::before {
+    content: 'Місто / Заклад: ';
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .concerts td:nth-child(2)::before {
+    content: 'К-сть місць: ';
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .concerts td:nth-child(3)::before {
+    content: 'Дата і час: ';
+    color: var(--muted);
+    font-weight: 700;
   }
 
   .concerts-order-col,
   .concerts-ticket-cell {
     display: none;
-  }
-
-  table {
-    min-width: 480px;
-  }
-
-  th,
-  td {
-    padding: 0.75rem;
-    font-size: 0.92rem;
   }
 }
 

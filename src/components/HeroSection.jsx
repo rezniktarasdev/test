@@ -19,14 +19,29 @@ export default function HeroSection({
     setTicketPanelOpen(false);
   };
 
+  const handleNavClick = (event, href) => {
+    event.preventDefault();
+    onCloseMenu();
+
+    const section = document.querySelector(href);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="hero" id="top">
       <div className="overlay"></div>
       <nav className="container nav">
-        <a href="#top" className="brand" onClick={onCloseMenu}>
+        <a href="#top" className="brand" onClick={(event) => handleNavClick(event, '#top')}>
           G&G
         </a>
-        <button className="menu-toggle" aria-label="Відкрити меню" onClick={onToggleMenu}>
+        <button
+          className="menu-toggle"
+          aria-label="Відкрити меню"
+          aria-expanded={mobileMenuOpen}
+          onClick={onToggleMenu}
+        >
           ☰
         </button>
         <ul className={`menu ${mobileMenuOpen ? 'open' : ''}`}>
@@ -37,7 +52,7 @@ export default function HeroSection({
             { href: '#contact', label: 'Контакти' },
           ].map((item) => (
             <li key={item.href}>
-              <a href={item.href} onClick={onCloseMenu}>
+              <a href={item.href} onClick={(event) => handleNavClick(event, item.href)}>
                 {item.label}
               </a>
             </li>

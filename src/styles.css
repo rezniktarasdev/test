@@ -271,8 +271,8 @@ footer {
   .menu {
     display: none;
     position: fixed;
-    left: 4vw;
-    right: 4vw;
+    left: 2vw;
+    right: 2vw;
     top: 64px;
     flex-direction: column;
     gap: 0.85rem;
@@ -335,6 +335,11 @@ footer {
   gap: 0.5rem;
 }
 
+.ticket-panel-list .btn-ticket {
+  width: auto;
+  min-width: 110px;
+}
+
 .ticket-panel-link {
   margin-top: 0.7rem;
   border: 0;
@@ -358,6 +363,10 @@ footer {
   .btn {
     width: 100%;
     text-align: center;
+  }
+
+  .ticket-panel-list .btn-ticket {
+    width: auto;
   }
 
   .footer {

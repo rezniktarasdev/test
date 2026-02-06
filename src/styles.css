@@ -302,6 +302,15 @@ footer {
     min-width: 560px;
   }
 
+  .concerts-order-col,
+  .concerts-ticket-cell {
+    display: none;
+  }
+
+  table {
+    min-width: 480px;
+  }
+
   th,
   td {
     padding: 0.75rem;

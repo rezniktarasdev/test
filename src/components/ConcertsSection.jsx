@@ -11,7 +11,7 @@ export default function ConcertsSection({ concerts, onTicketOrder }) {
               <th>Місто / Заклад</th>
               <th>К-сть місць</th>
               <th>Дата і час</th>
-              <th></th>
+              <th className="concerts-order-col"></th>
             </tr>
           </thead>
           <tbody>
@@ -22,8 +22,8 @@ export default function ConcertsSection({ concerts, onTicketOrder }) {
                 </td>
                 <td>{concert.seats}</td>
                 <td>{concert.date}</td>
-                <td>
-                  <button className="btn btn-ticket" onClick={() => onTicketOrder(concert.city)}>
+                <td className="concerts-ticket-cell">
+                  <button className="btn btn-ticket concerts-ticket-btn" onClick={() => onTicketOrder(concert.city)}>
                     Замовити квиток
                   </button>
                 </td>

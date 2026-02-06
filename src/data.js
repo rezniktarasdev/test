@@ -1,0 +1,24 @@
+export const concerts = [
+  { city: 'Київ', place: 'Dockers Pub', seats: 250, date: '25.10.2025, 19:00' },
+  { city: 'Львів', place: '!FESTrepublic', seats: 400, date: '01.11.2025, 20:00' },
+  { city: 'Одеса', place: 'Зелений театр', seats: 700, date: '09.11.2025, 19:30' },
+  { city: 'Харків', place: 'ArtZavod', seats: 500, date: '16.11.2025, 19:00' },
+];
+
+export const members = [
+  {
+    name: 'Максим — гітара',
+    image:
+      'https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    name: 'Олена — вокал',
+    image:
+      'https://images.unsplash.com/photo-1501612780327-45045538702b?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    name: 'Тарас — барабани',
+    image:
+      'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=800&q=80',
+  },
+];

@@ -95,13 +95,39 @@ p { line-height: 1.65; }
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
+
+.btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
 .btn-primary { margin-top: 0.8rem; background: var(--yellow); color: #121620; }
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(255, 226, 48, 0.35);
+  filter: brightness(1.03);
+}
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 4px 12px rgba(255, 226, 48, 0.28);
+}
+
 .btn-ticket, .btn-pink {
   background: var(--pink);
   color: white;
   font-size: 0.78rem;
   padding: 0.52rem 0.95rem;
+}
+.btn-ticket:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(255, 47, 116, 0.33);
+  filter: brightness(1.06);
+}
+.btn-ticket:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 4px 10px rgba(255, 47, 116, 0.26);
 }
 
 section { padding: 3rem 0; }

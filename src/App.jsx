@@ -34,6 +34,8 @@ export default function App() {
         onToggleMenu={toggleMenu}
         onCloseMenu={closeMenu}
         onScrollToContact={scrollToContact}
+        concerts={concerts}
+        onTicketOrder={handleTicketOrder}
       />
 
       <main>

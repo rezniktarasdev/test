@@ -1,34 +1,56 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+const UNSAFE_CONTENT_PATTERN = /<[^>]*>|javascript:|on\w+\s*=|data:text\/html|vbscript:|eval\s*\(|document\.|window\./i;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const VALIDATION_MESSAGES = {
+  nameMin: 'Імʼя має містити мінімум 2 символи.',
+  nameUnsafe: 'Поле містить недопустимі символи або код.',
+  emailInvalid: 'Вкажіть коректний email.',
+  emailUnsafe: 'Email містить недопустимі символи або код.',
+  messageMin: 'Повідомлення має містити мінімум 10 символів.',
+  messageUnsafe: 'Повідомлення містить недопустимі символи або код.',
+};
+
 export default function ContactSection() {
   const dispatch = useDispatch();
-  const { form, errors, status, statusType } = useSelector((state) => state);
+  const { form, errors, status, statusType, selectedCity } = useSelector((state) => state);
+  const cityQuery = encodeURIComponent(selectedCity);
 
   const onFieldChange = (field, value) => {
     dispatch({ type: 'SET_FIELD', payload: { field, value } });
   };
 
+  const hasUnsafeContent = (value) => UNSAFE_CONTENT_PATTERN.test(value);
+
   const validateForm = () => {
     const nextErrors = { name: '', email: '', message: '' };
-    let isValid = true;
+    const trimmed = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      message: form.message.trim(),
+    };
 
-    if (form.name.trim().length < 2) {
-      nextErrors.name = 'Імʼя має містити мінімум 2 символи.';
-      isValid = false;
+    if (trimmed.name.length < 2) {
+      nextErrors.name = VALIDATION_MESSAGES.nameMin;
+    } else if (hasUnsafeContent(trimmed.name)) {
+      nextErrors.name = VALIDATION_MESSAGES.nameUnsafe;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(form.email.trim())) {
-      nextErrors.email = 'Вкажіть коректний email.';
-      isValid = false;
+    if (!EMAIL_PATTERN.test(trimmed.email)) {
+      nextErrors.email = VALIDATION_MESSAGES.emailInvalid;
+    } else if (hasUnsafeContent(trimmed.email)) {
+      nextErrors.email = VALIDATION_MESSAGES.emailUnsafe;
     }
 
-    if (form.message.trim().length < 10) {
-      nextErrors.message = 'Повідомлення має містити мінімум 10 символів.';
-      isValid = false;
+    if (trimmed.message.length < 10) {
+      nextErrors.message = VALIDATION_MESSAGES.messageMin;
+    } else if (hasUnsafeContent(trimmed.message)) {
+      nextErrors.message = VALIDATION_MESSAGES.messageUnsafe;
     }
 
+    const isValid = Object.values(nextErrors).every((message) => message === '');
     if (!isValid) {
       dispatch({
         type: 'SET_VALIDATION',
@@ -38,10 +60,9 @@ export default function ContactSection() {
           statusType: 'error',
         },
       });
-      return false;
     }
 
-    return true;
+    return isValid;
   };
 
   const onSubmit = (event) => {
@@ -98,8 +119,8 @@ export default function ContactSection() {
         <div className="map-wrap">
           <h3>Наше місцезнаходження</h3>
           <iframe
-            title="Мапа Києва"
-            src="https://www.google.com/maps?q=Kyiv&output=embed"
+            title={`Мапа міста ${selectedCity}`}
+            src={`https://www.google.com/maps?q=${cityQuery}&output=embed`}
             loading="lazy"
           ></iframe>
         </div>

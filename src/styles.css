@@ -253,6 +253,11 @@ footer {
   text-decoration: underline;
 }
 
+.footer-phone-link {
+  display: inline-block;
+  padding: 0.2rem 0;
+}
+
 @media (max-width: 900px) {
   .members,
   .story-grid,
@@ -414,5 +419,9 @@ footer {
 
   .footer {
     font-size: 0.88rem;
+  }
+
+  .footer-phone-link {
+    padding: 0.35rem 0;
   }
 }

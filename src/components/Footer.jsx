@@ -9,7 +9,7 @@ export default function Footer() {
           <p>
             <a className="footer-link" href="mailto:booking@lotoplay">booking@lotoplay</a>
             {' • '}
-            <a className="footer-link" href="tel:+380991234567">+38 (099) 123-45-67</a>
+            <a className="footer-link footer-phone-link" href="tel:+380991234567" aria-label="Зателефонувати за номером +38 (099) 123-45-67">+38 (099) 123-45-67</a>
           </p>
         </div>
         <p className="footer-socials">

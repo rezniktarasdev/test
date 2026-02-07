@@ -23,7 +23,7 @@ export default function ConcertsSection({ concerts, onTicketOrder }) {
                 <td>{concert.seats}</td>
                 <td>{concert.date}</td>
                 <td className="concerts-ticket-cell">
-                  <button className="btn btn-ticket concerts-ticket-btn" onClick={() => onTicketOrder(concert.city)}>
+                  <button className="btn btn-ticket concerts-ticket-btn" type="button" onClick={() => onTicketOrder(concert.city)}>
                     Замовити квиток
                   </button>
                 </td>

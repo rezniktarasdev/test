@@ -10,7 +10,6 @@ export default function ContactSection() {
     dispatch({ type: 'SET_FIELD', payload: { field, value } });
   };
 
-
   const hasUnsafeContent = (value) => {
     const suspiciousPattern = /<[^>]*>|javascript:|on\w+\s*=|data:text\/html|vbscript:|eval\s*\(|document\.|window\./i;
     return suspiciousPattern.test(value);
@@ -18,33 +17,35 @@ export default function ContactSection() {
 
   const validateForm = () => {
     const nextErrors = { name: '', email: '', message: '' };
-    let isValid = true;
 
-    if (form.name.trim().length < 2) {
-      nextErrors.name = 'Імʼя має містити мінімум 2 символи.';
-      isValid = false;
-    } else if (hasUnsafeContent(form.name.trim())) {
-      nextErrors.name = 'Поле містить недопустимі символи або код.';
-      isValid = false;
+    const trimmedName = form.name.trim();
+    const trimmedEmail = form.email.trim();
+    const trimmedMessage = form.message.trim();
+
+    const markError = (field, message) => {
+      nextErrors[field] = message;
+    };
+
+    if (trimmedName.length < 2) {
+      markError('name', 'Імʼя має містити мінімум 2 символи.');
+    } else if (hasUnsafeContent(trimmedName)) {
+      markError('name', 'Поле містить недопустимі символи або код.');
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(form.email.trim())) {
-      nextErrors.email = 'Вкажіть коректний email.';
-      isValid = false;
-    } else if (hasUnsafeContent(form.email.trim())) {
-      nextErrors.email = 'Email містить недопустимі символи або код.';
-      isValid = false;
+    if (!emailPattern.test(trimmedEmail)) {
+      markError('email', 'Вкажіть коректний email.');
+    } else if (hasUnsafeContent(trimmedEmail)) {
+      markError('email', 'Email містить недопустимі символи або код.');
     }
 
-    if (form.message.trim().length < 10) {
-      nextErrors.message = 'Повідомлення має містити мінімум 10 символів.';
-      isValid = false;
-    } else if (hasUnsafeContent(form.message.trim())) {
-      nextErrors.message = 'Повідомлення містить недопустимі символи або код.';
-      isValid = false;
+    if (trimmedMessage.length < 10) {
+      markError('message', 'Повідомлення має містити мінімум 10 символів.');
+    } else if (hasUnsafeContent(trimmedMessage)) {
+      markError('message', 'Повідомлення містить недопустимі символи або код.');
     }
 
+    const isValid = !nextErrors.name && !nextErrors.email && !nextErrors.message;
     if (!isValid) {
       dispatch({
         type: 'SET_VALIDATION',

@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 
+const NAV_ITEMS = [
+  { href: '#about', label: 'Про гурт' },
+  { href: '#concerts', label: 'Концерти' },
+  { href: '#gallery', label: 'Галерея' },
+  { href: '#contact', label: 'Контакти' },
+];
+
 export default function HeroSection({
   mobileMenuOpen,
   onToggleMenu,
@@ -45,12 +52,7 @@ export default function HeroSection({
           ☰
         </button>
         <ul className={`menu ${mobileMenuOpen ? 'open' : ''}`}>
-          {[
-            { href: '#about', label: 'Про гурт' },
-            { href: '#concerts', label: 'Концерти' },
-            { href: '#gallery', label: 'Галерея' },
-            { href: '#contact', label: 'Контакти' },
-          ].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <li key={item.href}>
               <a href={item.href} onClick={(event) => handleNavClick(event, item.href)}>
                 {item.label}

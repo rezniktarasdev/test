@@ -1,17 +1,24 @@
 import { createStore } from 'redux';
 
+const ACTIONS = {
+  TOGGLE_MENU: 'TOGGLE_MENU',
+  CLOSE_MENU: 'CLOSE_MENU',
+  SET_FIELD: 'SET_FIELD',
+  SET_MESSAGE_FROM_TICKET: 'SET_MESSAGE_FROM_TICKET',
+  SET_VALIDATION: 'SET_VALIDATION',
+  SUBMIT_SUCCESS: 'SUBMIT_SUCCESS',
+};
+
+const EMPTY_FORM = {
+  name: '',
+  email: '',
+  message: '',
+};
+
 const initialState = {
   mobileMenuOpen: false,
-  form: {
-    name: '',
-    email: '',
-    message: '',
-  },
-  errors: {
-    name: '',
-    email: '',
-    message: '',
-  },
+  form: { ...EMPTY_FORM },
+  errors: { ...EMPTY_FORM },
   status: '',
   statusType: 'idle',
   selectedCity: 'Київ',
@@ -19,16 +26,16 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case 'TOGGLE_MENU':
+    case ACTIONS.TOGGLE_MENU:
       return { ...state, mobileMenuOpen: !state.mobileMenuOpen };
-    case 'CLOSE_MENU':
+    case ACTIONS.CLOSE_MENU:
       return { ...state, mobileMenuOpen: false };
-    case 'SET_FIELD':
+    case ACTIONS.SET_FIELD:
       return {
         ...state,
         form: { ...state.form, [action.payload.field]: action.payload.value },
       };
-    case 'SET_MESSAGE_FROM_TICKET':
+    case ACTIONS.SET_MESSAGE_FROM_TICKET:
       return {
         ...state,
         selectedCity: action.payload.city,
@@ -37,18 +44,18 @@ function reducer(state = initialState, action) {
           message: `Хочу замовити квиток на концерт у місті ${action.payload.city}.`,
         },
       };
-    case 'SET_VALIDATION':
+    case ACTIONS.SET_VALIDATION:
       return {
         ...state,
         errors: action.payload.errors,
         status: action.payload.status,
         statusType: action.payload.statusType,
       };
-    case 'SUBMIT_SUCCESS':
+    case ACTIONS.SUBMIT_SUCCESS:
       return {
         ...state,
-        form: { name: '', email: '', message: '' },
-        errors: { name: '', email: '', message: '' },
+        form: { ...EMPTY_FORM },
+        errors: { ...EMPTY_FORM },
         status: 'Дякуємо! Повідомлення успішно відправлено.',
         statusType: 'success',
       };

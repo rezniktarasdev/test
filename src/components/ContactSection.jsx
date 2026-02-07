@@ -1,6 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+const UNSAFE_CONTENT_PATTERN = /<[^>]*>|javascript:|on\w+\s*=|data:text\/html|vbscript:|eval\s*\(|document\.|window\./i;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const VALIDATION_MESSAGES = {
+  nameMin: 'Імʼя має містити мінімум 2 символи.',
+  nameUnsafe: 'Поле містить недопустимі символи або код.',
+  emailInvalid: 'Вкажіть коректний email.',
+  emailUnsafe: 'Email містить недопустимі символи або код.',
+  messageMin: 'Повідомлення має містити мінімум 10 символів.',
+  messageUnsafe: 'Повідомлення містить недопустимі символи або код.',
+};
+
 export default function ContactSection() {
   const dispatch = useDispatch();
   const { form, errors, status, statusType, selectedCity } = useSelector((state) => state);
@@ -10,42 +22,35 @@ export default function ContactSection() {
     dispatch({ type: 'SET_FIELD', payload: { field, value } });
   };
 
-  const hasUnsafeContent = (value) => {
-    const suspiciousPattern = /<[^>]*>|javascript:|on\w+\s*=|data:text\/html|vbscript:|eval\s*\(|document\.|window\./i;
-    return suspiciousPattern.test(value);
-  };
+  const hasUnsafeContent = (value) => UNSAFE_CONTENT_PATTERN.test(value);
 
   const validateForm = () => {
     const nextErrors = { name: '', email: '', message: '' };
-
-    const trimmedName = form.name.trim();
-    const trimmedEmail = form.email.trim();
-    const trimmedMessage = form.message.trim();
-
-    const markError = (field, message) => {
-      nextErrors[field] = message;
+    const trimmed = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      message: form.message.trim(),
     };
 
-    if (trimmedName.length < 2) {
-      markError('name', 'Імʼя має містити мінімум 2 символи.');
-    } else if (hasUnsafeContent(trimmedName)) {
-      markError('name', 'Поле містить недопустимі символи або код.');
+    if (trimmed.name.length < 2) {
+      nextErrors.name = VALIDATION_MESSAGES.nameMin;
+    } else if (hasUnsafeContent(trimmed.name)) {
+      nextErrors.name = VALIDATION_MESSAGES.nameUnsafe;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(trimmedEmail)) {
-      markError('email', 'Вкажіть коректний email.');
-    } else if (hasUnsafeContent(trimmedEmail)) {
-      markError('email', 'Email містить недопустимі символи або код.');
+    if (!EMAIL_PATTERN.test(trimmed.email)) {
+      nextErrors.email = VALIDATION_MESSAGES.emailInvalid;
+    } else if (hasUnsafeContent(trimmed.email)) {
+      nextErrors.email = VALIDATION_MESSAGES.emailUnsafe;
     }
 
-    if (trimmedMessage.length < 10) {
-      markError('message', 'Повідомлення має містити мінімум 10 символів.');
-    } else if (hasUnsafeContent(trimmedMessage)) {
-      markError('message', 'Повідомлення містить недопустимі символи або код.');
+    if (trimmed.message.length < 10) {
+      nextErrors.message = VALIDATION_MESSAGES.messageMin;
+    } else if (hasUnsafeContent(trimmed.message)) {
+      nextErrors.message = VALIDATION_MESSAGES.messageUnsafe;
     }
 
-    const isValid = !nextErrors.name && !nextErrors.email && !nextErrors.message;
+    const isValid = Object.values(nextErrors).every((message) => message === '');
     if (!isValid) {
       dispatch({
         type: 'SET_VALIDATION',
@@ -55,10 +60,9 @@ export default function ContactSection() {
           statusType: 'error',
         },
       });
-      return false;
     }
 
-    return true;
+    return isValid;
   };
 
   const onSubmit = (event) => {

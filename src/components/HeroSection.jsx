@@ -63,7 +63,7 @@ export default function HeroSection({
       </nav>
 
       <div className="container hero-content">
-        <h1>Грим та Грім</h1>
+        <h1>Гурт «Грим та Грім»</h1>
         <p className="subtitle">Справжній український рок, який гуркотить в серці.</p>
         <p>
           «Грим та Грім» — це поєднання потужних гітарних рифів, чесних текстів і вибухової
